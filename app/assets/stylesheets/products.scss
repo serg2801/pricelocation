@@ -1,0 +1,27 @@
+.products {
+    
+}
+.title_product {
+        text-align: center;
+        padding-bottom: 20px;
+}
+.product {
+    overflow: hidden;
+    
+    .img_product {
+        float: left;
+    }
+    .body_product {
+        float: left;
+        width: 50%;
+    }
+    
+}
+
+.img_thumb_product {
+    height: 70px;
+    width: auto;
+    padding-left: 20px;
+    width: 15%;
+    
+}
