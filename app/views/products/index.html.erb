@@ -9,7 +9,7 @@
             <% @products.each do |product| %>
             <tr>
                 <td><%= image_tag("#{product.image.src()}", :alt => "image", class: "img_thumb_product") unless product.image.blank? %> </td>
-                <td><%= link_to "#{product.title}", product_path(product) %></td>
+                <td><%= link_to "#{product.title}", edit_product_path(product) %></td>
             </tr>
             <% end %>
         </tbody>

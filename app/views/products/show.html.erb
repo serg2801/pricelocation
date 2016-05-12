@@ -1,9 +1,0 @@
-<h3 class="title_product"><%= @product.title %></h3>
-<div class="product">
-    <div class="img_product">
-        <%= image_tag("#{@product.image.src()}", :alt => "image", class: "") unless @product.image.blank? %>
-    </div>
-    <div class="body_product">
-        <%= @product.body_html.html_safe %>
-    </div>
-</div>
