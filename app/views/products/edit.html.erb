@@ -7,15 +7,15 @@ $(document).ready(function(){
         e.preventDefault();
         $(".add_variants").append('<div class="form-inline">' + 
             '<div class="form-group">' + 
-            '<input type="country" class="form-control" placeholder="Name Country">' +
+            '<input type="country" name="country[]" class="form-control" placeholder="Name Country">' +
             '</div>' +
             '<div class="form-group">' +
-            '<input type="price" class="form-control" placeholder="Price">' +
+            '<input type="price" name="price[]" class="form-control" placeholder="Price">' +
             '</div>' +
             '<div class="form-group">' +
-            '<input type="Currency" class="form-control" placeholder="Currency">' +
+            '<input type="currency" name="currency[]" class="form-control" placeholder="Currency">' +
             '</div>' + 
-            '<button type="submit" class="btn btn-primary remote_variant">Remote</button>' +
+            '<button type="submit" class="btn btn-danger remote_variant">Remote</button>' +
             '</div>');
       });
     // });
@@ -40,21 +40,21 @@ $(document).ready(function(){
 </div>
 <div class="add_variants_container">
     <div class="add_variants">
-        <button id="add_variant" class="btn btn-primary">Add Variant</button>
+        <button id="add_variant" class="btn btn-info">Add Variant</button>
         <div class="form-inline">
             <div class="form-group">
-                <input type="country" class="form-control" placeholder="Name Country">
+                <input type="country" name="country[]" class="form-control" placeholder="Name Country">
             </div>
             <div class="form-group">
-                <input type="price" class="form-control" placeholder="Price">
+                <input type="price" name="price[]" class="form-control" placeholder="Price">
             </div>
             <div class="form-group">
-                <input type="Currency" class="form-control" placeholder="Currency">
+                <input type="currency" name="currency[]" class="form-control" placeholder="Currency">
             </div>
             <!--<button type="submit" class="btn btn-primary">Remote</button>-->
         </div>
     </div>
     <div class="save_variants">
-        <button id="save" class="btn btn-primary">Save</button>
+        <button id="save" class="btn btn-success">Save</button>
     </div>
 </div>
