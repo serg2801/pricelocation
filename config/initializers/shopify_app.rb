@@ -3,6 +3,6 @@ ShopifyApp.configure do |config|
   config.secret = "25f72f67fe9c83066ea8a8d8a90b2bdf"
   # config.redirect_uri = "<redirect_uri>"
   config.redirect_uri = "https://pricelocation-serg2801.c9users.io/auth/shopify/callback"
-  config.scope = "read_orders, read_products"
+  config.scope = "read_orders, read_products, write_products"
   config.embedded_app = true
 end

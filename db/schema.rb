@@ -14,12 +14,12 @@
 ActiveRecord::Schema.define(version: 20160512140439) do
 
   create_table "price_countries_product_variants", force: :cascade do |t|
-    t.integer  "variant_id"
+    t.integer  "variant_id", limit: 8
     t.string   "name"
-    t.decimal  "price",      precision: 8, scale: 2
+    t.integer  "price"
     t.string   "currency"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "shops", force: :cascade do |t|

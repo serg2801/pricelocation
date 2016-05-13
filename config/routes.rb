@@ -6,10 +6,13 @@ Rails.application.routes.draw do
     get 'auth/shopify/callback' => :callback
     get 'logout' => :destroy, :as => :logout
   end
-
-
-  resources :products
+  
   root :to => 'products#index'
+  
+  
+  resources :products
+  post    'generate_variant', to: 'products#generate_variant'
+  delete  'destroy_product_variant', to: 'products#destroy_product_variant'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

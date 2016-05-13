@@ -2,27 +2,57 @@
 
 $(document).ready(function(){
     
-    // $(function() {
       $("#add_variant").click(function(e) {
         e.preventDefault();
-        $(".add_variants").append('<div class="form-inline">' + 
-            '<div class="form-group">' + 
+        $(".variants").append('<div class="form-inline variant">' + 
+            '<div class="form-group variant_name">' + 
             '<input type="country" name="country[]" class="form-control" placeholder="Name Country">' +
             '</div>' +
-            '<div class="form-group">' +
+            '<div class="form-group variant_price">' +
             '<input type="price" name="price[]" class="form-control" placeholder="Price">' +
             '</div>' +
-            '<div class="form-group">' +
+            '<div class="form-group variant_currency">' +
             '<input type="currency" name="currency[]" class="form-control" placeholder="Currency">' +
             '</div>' + 
-            '<button type="submit" class="btn btn-danger remote_variant">Remote</button>' +
+            '<button type="submit" class="btn btn-danger remote_variant">Remove</button>' +
             '</div>');
       });
-    // });
     
     $(document).on("click", ".remote_variant",function(e){
         e.preventDefault();
         $(this).parents(".form-inline").remove();
+    });
+    
+    $(document).on('click', "#save_variants", function () {
+        var mas_variants = [];
+        $('.variants .variant').each(function () {
+            var variant_info = {}
+            this_variant = $(this);
+            variant_info.name_country = this_variant.find('.variant_name input').val();
+            variant_info.price = this_variant.find('.variant_price input').val();
+            variant_info.currency = this_variant.find('.variant_currency input').val();
+            mas_variants.push(variant_info);
+        });
+        $.ajax({
+            type: 'POST',
+            dataType: 'JSON',
+            url: '<%= generate_variant_path %>',
+            data: { variants: mas_variants, id: <%= @product.id %> },
+            success: function (data) {}
+        });
+    });
+    
+    
+    $(document).on('click', ".destroy_product_variant", function () {
+        $.ajax({
+            type: 'DELETE',
+            dataType: 'JSON',
+            url: '<%= destroy_product_variant_path %>',
+            // data: {"messages_ids": messages_ids},
+            success: function (data) {
+                $(".product_variant_" + data.id).remove();
+            }
+        });
     });
     
 });
@@ -38,23 +68,47 @@ $(document).ready(function(){
         <%= @product.body_html.html_safe %>
     </div>
 </div>
+<div class="list_products_variants">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Country</th>
+                <th>Price</th>
+                <th>Currency</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @product_variants.each do |product_variant| %>
+            <tr class="<%= "product_variant_" + "#{product_variant.id}" %>" >
+                <td><%= product_variant.option2 %></td>
+                <td><%= product_variant.price %></td>
+                <td><%= product_variant.option1 %></td>
+                <td>
+                    <%= link_to 'Edit', '#', class: 'btn btn-success btn-raised btn-xs' %>
+                    <%= link_to 'Destroy', '#', class: 'btn btn-danger btn-raised btn-xs destroy_product_variant', :'data-product_variant-id' => product_variant.id %>
+                </td>
+            </tr>
+            <% end %>
+        </tbody>
+     </table>
+</div>
 <div class="add_variants_container">
-    <div class="add_variants">
+    <div class="variants">
         <button id="add_variant" class="btn btn-info">Add Variant</button>
-        <div class="form-inline">
-            <div class="form-group">
+        <div class="form-inline variant">
+            <div class="form-group variant_name">
                 <input type="country" name="country[]" class="form-control" placeholder="Name Country">
             </div>
-            <div class="form-group">
+            <div class="form-group variant_price">
                 <input type="price" name="price[]" class="form-control" placeholder="Price">
             </div>
-            <div class="form-group">
+            <div class="form-group variant_currency">
                 <input type="currency" name="currency[]" class="form-control" placeholder="Currency">
             </div>
-            <!--<button type="submit" class="btn btn-primary">Remote</button>-->
         </div>
     </div>
     <div class="save_variants">
-        <button id="save" class="btn btn-success">Save</button>
+        <button id="save_variants" class="btn btn-success">Save</button>
     </div>
 </div>

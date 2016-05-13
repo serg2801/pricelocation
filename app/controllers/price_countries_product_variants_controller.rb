@@ -1,6 +1,6 @@
 class PriceCountriesProductVariantsController < ApplicationController
     
-    def create
+    def index
     end
     
     def destroy
