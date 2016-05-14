@@ -10,20 +10,24 @@ class ProductsController < AuthenticatedController
     end
     
     def generate_variant
-        @product = ShopifyAPI::Product.find(params[:id])
+        # option1: currency
+        # option2: country
+        product = ShopifyAPI::Product.find(params[:id])
         params[:variants].each do |variant|
-            @params_variant = variant[1]
-            @variant = ShopifyAPI::Variant.new(product_id: @product.id, option1: @params_variant[:currency], option2: @params_variant[:name_country], price: @params_variant[:price].to_i )
-            if @variant.save
-                @price_countries_product_variants = PriceCountriesProductVariant.new(name: @params_variant[:name_country], price: @params_variant[:price].to_i, currency: @params_variant[:currency], variant_id: @variant.id )
-                @price_countries_product_variants.save
+            params_variant = variant[1]
+            variant = ShopifyAPI::Variant.new(product_id: product.id, option1: params_variant[:currency], price: params_variant[:price].to_f )
+            if variant.save
+                price_countries_product_variants = PriceCountriesProductVariant.new(name: params_variant[:name_country], price: params_variant[:price].to_f, currency: params_variant[:currency], variant_id: variant.id )
+                price_countries_product_variants.save
             end
         end
-        redirect_to products_path
+        respond_to do |format|
+            # format.html {redirect_to product_path}
+            format.js { render json: {  } }
+        end
     end
     
     def destroy_product_variant
-        binding.pry
         @variant = ShopifyAPI::Variant.find(params[:id])
         @variant.destroy
         respond_to do |format|

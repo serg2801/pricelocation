@@ -38,17 +38,20 @@ $(document).ready(function(){
             dataType: 'JSON',
             url: '<%= generate_variant_path %>',
             data: { variants: mas_variants, id: <%= @product.id %> },
-            success: function (data) {}
+            success: function (data) {
+                window.location.reload();
+            }
         });
     });
     
     
     $(document).on('click', ".destroy_product_variant", function () {
+        var product_variant = $(this).attr('data-product-variant-id');
         $.ajax({
             type: 'DELETE',
             dataType: 'JSON',
             url: '<%= destroy_product_variant_path %>',
-            // data: {"messages_ids": messages_ids},
+            data: { "id": product_variant },
             success: function (data) {
                 $(".product_variant_" + data.id).remove();
             }
@@ -86,7 +89,7 @@ $(document).ready(function(){
                 <td><%= product_variant.option1 %></td>
                 <td>
                     <%= link_to 'Edit', '#', class: 'btn btn-success btn-raised btn-xs' %>
-                    <%= link_to 'Destroy', '#', class: 'btn btn-danger btn-raised btn-xs destroy_product_variant', :'data-product_variant-id' => product_variant.id %>
+                    <%= link_to 'Destroy', '#', class: 'btn btn-danger btn-raised btn-xs destroy_product_variant', :'data-product-variant-id' => product_variant.id %>
                 </td>
             </tr>
             <% end %>
