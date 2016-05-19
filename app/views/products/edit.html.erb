@@ -141,9 +141,9 @@ $(document).ready(function(){
         <tbody>
             <% @product_variants.each do |product_variant| %>
             <tr class="<%= "product_variant_" + "#{product_variant.id}" %>" >
-                <td><%= product_variant.option2 %></td>
+                <td><%= product_variant.name %></td>
                 <td><%= product_variant.price %></td>
-                <td><%= product_variant.option1 %></td>
+                <td><%= product_variant.currency %></td>
                 <td>
                     <%= link_to 'Edit', '#', class: 'btn btn-success btn-raised btn-xs edit_product_variant', :'data-toggle' => "modal", :'data-target' => ".edit_product_variant_modal", :'data-product-variant-id' => product_variant.id %>
                     <%= link_to 'Destroy', '#', class: 'btn btn-danger btn-raised btn-xs destroy_product_variant', :'data-product-variant-id' => product_variant.id %>
@@ -156,17 +156,6 @@ $(document).ready(function(){
 <div class="add_variants_container">
     <div class="variants">
         <button id="add_variant" class="btn btn-info">Add Variant</button>
-        <div class="form-inline variant">
-            <div class="form-group variant_name">
-                <input type="country" name="country[]" class="form-control" placeholder="Name Country">
-            </div>
-            <div class="form-group variant_price">
-                <input type="price" name="price[]" class="form-control" placeholder="Price">
-            </div>
-            <div class="form-group variant_currency">
-                <input type="currency" name="currency[]" class="form-control" placeholder="Currency">
-            </div>
-        </div>
     </div>
     <div class="save_variants">
         <button id="save_variants" class="btn btn-success">Save</button>

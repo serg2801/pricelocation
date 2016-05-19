@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512140439) do
+ActiveRecord::Schema.define(version: 20160519135428) do
 
   create_table "price_countries_product_variants", force: :cascade do |t|
     t.integer  "variant_id", limit: 8
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20160512140439) do
     t.string   "currency"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+    t.integer  "product_id", limit: 8
   end
 
   create_table "shops", force: :cascade do |t|

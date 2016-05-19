@@ -6,7 +6,7 @@ class ProductsController < AuthenticatedController
     
     def edit
         @product = ShopifyAPI::Product.find(params[:id])
-        @product_variants = @product.variants
+        @product_variants = PriceCountriesProductVariant.where(:product_id => @product.id)
     end
     
     def generate_variant
@@ -15,9 +15,9 @@ class ProductsController < AuthenticatedController
         product = ShopifyAPI::Product.find(params[:id])
         params[:variants].each do |variant|
             params_variant = variant[1]
-            variant = ShopifyAPI::Variant.new(product_id: product.id, option1: params_variant[:currency], price: params_variant[:price].to_f )
-            if variant.save
-                price_countries_product_variants = PriceCountriesProductVariant.new(name: params_variant[:name_country], price: params_variant[:price].to_f, currency: params_variant[:currency], variant_id: variant.id )
+            @variant = ShopifyAPI::Variant.new(product_id: product.id, option1: params_variant[:currency], price: params_variant[:price].to_f )
+            if @variant.save
+                price_countries_product_variants = PriceCountriesProductVariant.new(name: params_variant[:name_country], price: params_variant[:price].to_f, currency: params_variant[:currency], variant_id: @variant.id, product_id: product.id )
                 price_countries_product_variants.save
             end
         end
