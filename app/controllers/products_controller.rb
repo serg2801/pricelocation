@@ -37,6 +37,19 @@ class ProductsController < AuthenticatedController
     end
     
     def edit_product_variant
+        binding.pry
+        # product = ShopifyAPI::Product.find(params[:id_product])
+        params_variant = params[:variant]
+        variant = ShopifyAPI::Variant.update(variant_id: params_variant[:product_variant_id], option1: params_variant[:currency], price: params_variant[:price].to_f )
+            if variant.save
+                price_countries_product_variants = PriceCountriesProductVariant.update(name: params_variant[:name_country], price: params_variant[:price].to_f, currency: params_variant[:currency], variant_id: variant.id )
+                if price_countries_product_variants.save
+                    respond_to do |format|
+                        # format.html {redirect_to product_path}
+                        format.js { render json: { id: variant.id } }
+                    end
+                end
+            end
     end
 
     

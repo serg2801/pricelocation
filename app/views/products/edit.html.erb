@@ -58,19 +58,29 @@ $(document).ready(function(){
         });
     });
     
+     $(document).on('click', ".edit_product_variant", function () {
+        var product_variant = $(this).attr('data-product-variant-id');
+        $( ".modal .modal-footer .update_variant_js" ).attr('data-product-variant-id', product_variant);
+     });
     
-    // $(document).on('click', ".update_variant_js", function () {
-    //     var product_variant = $(this).attr('data-product-variant-id');
-    //     $.ajax({
-    //         type: 'PUT',
-    //         dataType: 'JSON',
-    //         url: '<%#= edit_product_variant_path %>',
-    //         // data: { "id": product_variant },
-    //         success: function (data) {
-    //             window.location.reload();
-    //         }
-    //     });
-    // });
+    
+    $(document).on('click', ".update_variant_js", function () {
+        var product_variant_id = $(this).attr('data-product-variant-id');
+        this_variant = $('.modal_body_update_variant')
+        var variant_info = {}
+        variant_info.name_country = this_variant.find('.variant_name input').val();
+        variant_info.price = this_variant.find('.variant_price input').val();
+        variant_info.currency = this_variant.find('.variant_currency input').val();
+        $.ajax({
+            type: 'PUT',
+            dataType: 'JSON',
+            url: '<%= edit_product_variant_path %>',
+             data: { variant: variant_info, id_product: <%= @product.id %>, product_variant_id: product_variant_id },
+            success: function (data) {
+                window.location.reload();
+            }
+        });
+    });
     
 });
 </script>
@@ -82,9 +92,9 @@ $(document).ready(function(){
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Update variant</h4>
+        <h4 class="modal-title">Update variant</h4>
       </div>
-      <div class="modal-body ">
+      <div class="modal-body modal_body_update_variant">
           
           <div class="form-inline variant">
             <div class="form-group variant_name">
@@ -135,7 +145,7 @@ $(document).ready(function(){
                 <td><%= product_variant.price %></td>
                 <td><%= product_variant.option1 %></td>
                 <td>
-                    <%= link_to 'Edit', '#', class: 'btn btn-success btn-raised btn-xs', :'data-toggle' => "modal", :'data-target' => ".edit_product_variant_modal", :'data-product-variant-id' => product_variant.id %>
+                    <%= link_to 'Edit', '#', class: 'btn btn-success btn-raised btn-xs edit_product_variant', :'data-toggle' => "modal", :'data-target' => ".edit_product_variant_modal", :'data-product-variant-id' => product_variant.id %>
                     <%= link_to 'Destroy', '#', class: 'btn btn-danger btn-raised btn-xs destroy_product_variant', :'data-product-variant-id' => product_variant.id %>
                 </td>
             </tr>
