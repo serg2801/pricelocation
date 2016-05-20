@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519135428) do
+ActiveRecord::Schema.define(version: 20160520122346) do
+
+  create_table "ips", force: :cascade do |t|
+    t.string   "address"
+    t.integer  "region_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "ips", ["region_id"], name: "index_ips_on_region_id"
 
   create_table "price_countries_product_variants", force: :cascade do |t|
     t.integer  "variant_id", limit: 8
@@ -21,6 +30,15 @@ ActiveRecord::Schema.define(version: 20160519135428) do
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "product_id", limit: 8
+    t.integer  "region_id"
+  end
+
+  add_index "price_countries_product_variants", ["region_id"], name: "index_price_countries_product_variants_on_region_id"
+
+  create_table "regions", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "shops", force: :cascade do |t|

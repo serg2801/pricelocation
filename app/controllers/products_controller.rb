@@ -7,6 +7,7 @@ class ProductsController < AuthenticatedController
     def edit
         @product = ShopifyAPI::Product.find(params[:id])
         @product_variants = PriceCountriesProductVariant.where(:product_id => @product.id)
+        @regions = Region.all
     end
     
     def generate_variant
@@ -15,9 +16,10 @@ class ProductsController < AuthenticatedController
         product = ShopifyAPI::Product.find(params[:id])
         params[:variants].each do |variant|
             params_variant = variant[1]
-            @variant = ShopifyAPI::Variant.new(product_id: product.id, option1: params_variant[:currency], price: params_variant[:price].to_f )
+            @region = Region.find(params_variant[:region_id])
+            @variant = ShopifyAPI::Variant.new(product_id: product.id, option1: @region.name, price: params_variant[:price].to_f )
             if @variant.save
-                price_countries_product_variants = PriceCountriesProductVariant.new(name: params_variant[:name_country], price: params_variant[:price].to_f, currency: params_variant[:currency], variant_id: @variant.id, product_id: product.id )
+                price_countries_product_variants = PriceCountriesProductVariant.new(region_id: params_variant[:region_id], price: params_variant[:price].to_f, currency: params_variant[:currency], variant_id: @variant.id, product_id: product.id )
                 price_countries_product_variants.save
             end
         end
@@ -28,11 +30,14 @@ class ProductsController < AuthenticatedController
     end
     
     def destroy_product_variant
-        @variant = ShopifyAPI::Variant.find(params[:id])
+        @price_countries_product_variant = PriceCountriesProductVariant.find(params[:id])
+        @variant = ShopifyAPI::Variant.find(@price_countries_product_variant.variant_id)
+        
         @variant.destroy
+        @price_countries_product_variant.destroy
         respond_to do |format|
             # format.html {redirect_to product_path}
-            format.js { render json: { id: @variant.id } }
+            format.js { render json: { id: @price_countries_product_variant.id } }
         end
     end
     
