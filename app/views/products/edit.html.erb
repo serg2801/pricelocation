@@ -1,57 +1,58 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
+  $("#add_variant").click(function(e) {
+    e.preventDefault();
+    $(".variants").append('<div class="form-inline variant">' + 
+      '<div class="form-group variant_name">' + 
+        '<select class="form-control select_region">' +
+          '<option value="0">-Select Region-</option>' +
+          <% @regions.each do |region| %>
+          '<option value="<%= region.id %>"><%= region.name %></option>' +
+          <% end %>
+        '</select>' +
+      '</div>' +
+      '<div class="form-group variant_price">' +
+        '<input type="price" name="price[]" class="form-control" placeholder="Price">' +
+      '</div>' +
+      '<div class="form-group variant_currency">' +
+        '<select class="form-control">' + 
+          '<option value="EURO">EURO</option>' + 
+          '<option value="STG">STG</option>' +
+        '</select>' +
+      '</div>' + 
+      '<button type="submit" class="btn btn-danger remote_variant">Remove</button>' +
+    '</div>');
+  });
     
-      $("#add_variant").click(function(e) {
-        e.preventDefault();
-        $(".variants").append('<div class="form-inline variant">' + 
-            '<div class="form-group variant_name">' + 
-            '<select class="form-control select_region">' +
-            '<option value="0">-Select Region-</option>' +
-            <% @regions.each do |region| %>
-            '<option value="<%= region.id %>"><%= region.name %></option>' +
-            <% end %>
-            '</select>' +
-            '</div>' +
-            '<div class="form-group variant_price">' +
-            '<input type="price" name="price[]" class="form-control" placeholder="Price">' +
-            '</div>' +
-            '<div class="form-group variant_currency">' +
-            '<input type="currency" name="currency[]" class="form-control" placeholder="Currency">' +
-            '</div>' + 
-            '<button type="submit" class="btn btn-danger remote_variant">Remove</button>' +
-            '</div>');
-      });
+  $(document).on("click", ".remote_variant",function(e){
+    e.preventDefault();
+    $(this).parents(".form-inline").remove();
+  });
     
-    $(document).on("click", ".remote_variant",function(e){
-        e.preventDefault();
-        $(this).parents(".form-inline").remove();
+  $(document).on('click', "#save_variants", function () {
+    var mas_variants = [];
+    $('.variants .variant').each(function () {
+      var variant_info = {}
+      this_variant = $(this);
+      variant_info.region_id = this_variant.find('.select_region').val();
+      variant_info.price = this_variant.find('.variant_price input').val();
+      variant_info.currency = this_variant.find('.variant_currency select').val();
+      mas_variants.push(variant_info);
     });
-    
-    $(document).on('click', "#save_variants", function () {
-        var mas_variants = [];
-        $('.variants .variant').each(function () {
-            var variant_info = {}
-            this_variant = $(this);
-            variant_info.region_id = this_variant.find('.select_region').val();
-            variant_info.price = this_variant.find('.variant_price input').val();
-            variant_info.currency = this_variant.find('.variant_currency input').val();
-            mas_variants.push(variant_info);
-        });
-        $.ajax({
-            type: 'POST',
-            dataType: 'JSON',
-            url: '<%= generate_variant_path %>',
-            data: { 
-              variants: mas_variants, 
-              id: <%= @product.id %> 
-            },
-            success: function (data) {
-                window.location.reload();
-            }
-        });
+    $.ajax({
+      type: 'POST',
+      dataType: 'JSON',
+      url: '<%= generate_variant_path %>',
+      data: { 
+        variants: mas_variants, 
+        id: <%= @product.id %> 
+      },
+      success: function (data) {
+        window.location.reload();
+      }
     });
-    
+  });
     
     $(document).on('click', ".destroy_product_variant", function () {
         var product_variant = $(this).attr('data-product-variant-id');
@@ -73,20 +74,21 @@ $(document).ready(function(){
     
     
     $(document).on('click', ".update_variant_js", function () {
-      var product_variant_id = $(this).attr('data-product-variant-id');
-      this_variant = $('.modal_body_update_variant')
+      var variant_id = $(this).attr('data-product-variant-id');
+      modal_window = $('.modal_body_update_variant')
       var variant_info = {}
-      variant_info.region_id = this_variant.find('.select_region').val();
-      variant_info.price = this_variant.find('.variant_price input').val();
-      variant_info.currency = this_variant.find('.variant_currency input').val();
+      variant_info.region_id = modal_window.find('.select_region').val();
+      variant_info.price = modal_window.find('.variant_price input').val();
+      variant_info.currency = modal_window.find('.variant_currency select').val();
       $.ajax({
-        type: 'PUT',
+        type: 'POST',
         dataType: 'JSON',
-        url: '<%= edit_product_variant_path %>',
+        url: '<%= update_product_variant_path %>',
         data: { 
           variant: variant_info, 
           id_product: <%= @product.id %>, 
-          product_variant_id: product_variant_id,
+          price_countries_product_variant_id: variant_id,
+          _method: 'PATCH'
         },
         success: function (data) {
           window.location.reload();
@@ -107,19 +109,25 @@ $(document).ready(function(){
         <h4 class="modal-title">Update variant</h4>
       </div>
       <div class="modal-body modal_body_update_variant">
-          
-          <div class="form-inline variant">
-            <div class="form-group variant_name">
-                <input type="country" name="country[]" class="form-control" placeholder="Name Country">
-            </div>
-            <div class="form-group variant_price">
-                <input type="price" name="price[]" class="form-control" placeholder="Price">
-            </div>
-            <div class="form-group variant_currency">
-                <input type="currency" name="currency[]" class="form-control" placeholder="Currency">
-            </div>
+        <div class="form-inline variant">
+          <div class="form-group variant_name">
+            <select class="form-control select_region">
+              <option value="0">-Select Region-</option>
+              <% @regions.each do |region| %>
+              <option value="<%= region.id %>"><%= region.name %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="form-group variant_price">
+            <input type="price" name="price[]" class="form-control" placeholder="Price">
+          </div>
+          <div class="form-group variant_currency">
+            <select class="form-control">
+              <option value="EURO">EURO</option>
+              <option value="STG">STG</option>
+           </select>
+          </div>
         </div>
-          
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -154,7 +162,7 @@ $(document).ready(function(){
             <% @product_variants.each do |product_variant| %>
             <tr class="<%= "product_variant_" + "#{product_variant.id}" %>" >
                 <td><%= product_variant.region.nil? ? "Region not assigned" : product_variant.region.name %></td>
-                <td><%= product_variant.price %></td>
+                <td><%= product_variant.price.to_f %></td>
                 <td><%= product_variant.currency %></td>
                 <td>
                     <%= link_to 'Edit', '#', class: 'btn btn-success btn-raised btn-xs edit_product_variant', :'data-toggle' => "modal", :'data-target' => ".edit_product_variant_modal", :'data-product-variant-id' => product_variant.id %>

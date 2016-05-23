@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160520122346) do
+ActiveRecord::Schema.define(version: 20160523141249) do
 
   create_table "ips", force: :cascade do |t|
     t.string   "address"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20160520122346) do
   create_table "price_countries_product_variants", force: :cascade do |t|
     t.integer  "variant_id", limit: 8
     t.string   "name"
-    t.integer  "price"
+    t.float    "price"
     t.string   "currency"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false

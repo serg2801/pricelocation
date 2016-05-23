@@ -1,0 +1,1 @@
+json.array! @price_countries_product_variants, :product_id, :price, :currency

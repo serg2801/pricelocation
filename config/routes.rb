@@ -13,8 +13,8 @@ Rails.application.routes.draw do
   resources :products
   post    'generate_variant',        to: 'products#generate_variant'
   delete  'destroy_product_variant', to: 'products#destroy_product_variant'
-  put     'edit_product_variant',    to: 'products#edit_product_variant'
-  
+  patch   'update_product_variant',    to: 'products#update_product_variant'
+  get '/products_info', to: 'products_info#show', defaults: { format: 'json' }
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
