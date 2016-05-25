@@ -138,46 +138,54 @@ $(document).ready(function(){
 </div>
 
 
+<div class="container">
+  
 
-<h3 class="title_product"><%= @product.title %></h3>
-<div class="product">
+  <h3 class="title_product"><%= @product.title %></h3>
+  <div class="product">
     <div class="img_product">
-        <%= image_tag("#{@product.image.src()}", :alt => "image", class: "") unless @product.image.blank? %>
+      <%= image_tag("#{@product.image.src()}", :alt => "image", class: "") unless @product.image.blank? %>
     </div>
     <div class="body_product">
-        <%= @product.body_html.html_safe %>
+      <%= @product.body_html.html_safe %>
     </div>
-</div>
-<div class="list_products_variants">
+  </div>
+  <div class="list_products_variants">
     <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Region</th>
-                <th>Price</th>
-                <th>Currency</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <% @product_variants.each do |product_variant| %>
-            <tr class="<%= "product_variant_" + "#{product_variant.id}" %>" >
-                <td><%= product_variant.region.nil? ? "Region not assigned" : product_variant.region.name %></td>
-                <td><%= product_variant.price.to_f %></td>
-                <td><%= product_variant.currency %></td>
-                <td>
-                    <%= link_to 'Edit', '#', class: 'btn btn-success btn-raised btn-xs edit_product_variant', :'data-toggle' => "modal", :'data-target' => ".edit_product_variant_modal", :'data-product-variant-id' => product_variant.id %>
-                    <%= link_to 'Destroy', '#', class: 'btn btn-danger btn-raised btn-xs destroy_product_variant', :'data-product-variant-id' => product_variant.id %>
-                </td>
-            </tr>
-            <% end %>
-        </tbody>
-     </table>
-</div>
-<div class="add_variants_container">
+      <thead>
+        <tr>
+          <th>Region</th>
+          <th>Price</th>
+          <th>Currency</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @product_variants.each do |product_variant| %>
+        <tr class="<%= "product_variant_" + "#{product_variant.id}" %>" >
+          <td><%= product_variant.region.nil? ? "Region not assigned" : product_variant.region.name %></td>
+          <td><%= product_variant.price.to_f %></td>
+          <td><%= product_variant.currency %></td>
+          <td>
+            <%= link_to 'Edit', '#', class: 'btn btn-success btn-raised btn-xs edit_product_variant', :'data-toggle' => "modal", :'data-target' => ".edit_product_variant_modal", :'data-product-variant-id' => product_variant.id %>
+            <%= link_to 'Destroy', '#', class: 'btn btn-danger btn-raised btn-xs destroy_product_variant', :'data-product-variant-id' => product_variant.id %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="add_variants_container">
     <div class="variants">
-        <button id="add_variant" class="btn btn-info">Add Variant</button>
+      <button id="add_variant" class="btn btn-info">Add Variant</button>
     </div>
     <div class="save_variants">
-        <button id="save_variants" class="btn btn-success">Save</button>
+      <button id="save_variants" class="btn btn-success">Save</button>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <%= link_to "Back To All Products", root_url(:protocol => 'https'), :class => 'btn btn-primary' %>
+    </div>
+  </div>
 </div>

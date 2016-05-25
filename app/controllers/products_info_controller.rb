@@ -26,8 +26,11 @@ class ProductsInfoController < ApplicationController
   
   def show
     products_ids = params[:products_ids]
-    remote_ip = '217.173.208.0'
-    #remote_ip = request.remote_ip
+    #remote_ip = '220.100.128.0' 
+    #217.173.208.0 Ireland
+    #220.100.128.0 UK
+    #217.199.80.0 Rest of Europe
+    remote_ip = request.remote_ip
     @ip = Ip.find_by(address: remote_ip)
     if @ip.nil?
       @region_id = 4

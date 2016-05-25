@@ -1,1 +1,1 @@
-json.array! @price_countries_product_variants, :product_id, :price, :currency
+json.array! @price_countries_product_variants, :product_id, :price, :currency, :variant_id
