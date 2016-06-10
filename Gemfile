@@ -29,7 +29,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use Unicorn as the app server
 # gem 'unicorn'
-
+gem 'pg'
 gem 'geoip'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'pry'
