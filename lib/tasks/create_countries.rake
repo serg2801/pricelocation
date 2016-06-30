@@ -1,7 +1,7 @@
 desc "Create countries with corresponding regions"
   task :create_countries => :environment do 
-  Country.create(region_id: 1, name: "Ireland")
-  Country.create(region_id: 2, name: "United Kingdom")
+  Country.create(region_id: 2, name: "Ireland")
+  Country.create(region_id: 1, name: "United Kingdom")
   Country.create(region_id: 3, name: "Austria")
   Country.create(region_id: 3, name: "Belgium")
   Country.create(region_id: 3, name: "Bulgaria")
