@@ -1,4 +1,8 @@
 class ProductsInfoController < ApplicationController
+  GEOIP_SERVICE_HOST = "http://ip2c.org/"
+  
+  require 'open-uri'
+  
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers
 
@@ -26,18 +30,19 @@ class ProductsInfoController < ApplicationController
   
   def show
     products_ids = params[:products_ids]
-    #remote_ip = '220.100.128.0' 
+    #remote_ip = '217.199.80.0' 
     #217.173.208.0 Ireland
-    #220.100.128.0 UK
+    #185.54.84.0 UK
     #217.199.80.0 Rest of Europe
     remote_ip = request.remote_ip
-    @ip = Ip.find_by(address: remote_ip)
-    if @ip.nil?
-      @region_id = 4
+    country_name = open("#{GEOIP_SERVICE_HOST}?ip=#{remote_ip}") { |country_data| country_data.read }.split(";").last
+    country = Country.where(name: country_name)[0]
+    if country.nil?
+      region_id = 4
     else
-      @region_id = @ip.region_id
+      region_id = country.region.id
     end
-    @price_countries_product_variants = PriceCountriesProductVariant.where("product_id in (#{products_ids.join(',')}) and region_id = #{@region_id}")
+    @price_countries_product_variants = PriceCountriesProductVariant.where("product_id in (#{products_ids.join(',')}) and region_id = #{region_id}")
     respond_to do |format|
       format.json #{ render status: :ok, :callback => params[:callback] }
     end
