@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160630064343) do
+ActiveRecord::Schema.define(version: 20160712135852) do
 
   create_table "countries", force: :cascade do |t|
     t.string   "name"
@@ -32,14 +32,15 @@ ActiveRecord::Schema.define(version: 20160630064343) do
   add_index "ips", ["region_id"], name: "index_ips_on_region_id"
 
   create_table "price_countries_product_variants", force: :cascade do |t|
-    t.integer  "variant_id", limit: 8
+    t.integer  "variant_id",     limit: 8
     t.string   "name"
     t.float    "price"
     t.string   "currency"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-    t.integer  "product_id", limit: 8
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "product_id",     limit: 8
     t.integer  "region_id"
+    t.float    "price_in_euros"
   end
 
   add_index "price_countries_product_variants", ["region_id"], name: "index_price_countries_product_variants_on_region_id"
