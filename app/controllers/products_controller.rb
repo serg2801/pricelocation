@@ -11,7 +11,7 @@ class ProductsController < AuthenticatedController
   end
   
   def generate_variant
-    _gbp_rate = JSON.parse(open("db/currency_rates.txt").read)["GBP"]
+    _gbp_rate = JSON.parse(open("public/currency_rates.txt").read)["GBP"]
     product = ShopifyAPI::Product.find(params[:id])
     params[:variants].each do |variant|
       params_variant = variant[1]
@@ -51,7 +51,7 @@ class ProductsController < AuthenticatedController
   end
   
   def update_product_variant
-    _gbp_rate = JSON.parse(open("db/currency_rates.txt").read)["GBP"]
+    _gbp_rate = JSON.parse(open("public/currency_rates.txt").read)["GBP"]
     params_variant = params[:variant]
     @region = Region.find params_variant["region_id"]
     @price_countries_product_variant = PriceCountriesProductVariant.find(params[:price_countries_product_variant_id])
