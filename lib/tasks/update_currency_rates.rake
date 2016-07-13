@@ -4,7 +4,10 @@ task :update_currency_rates => :environment do
   require 'json'
   
   currency_rates = JSON.parse(open("http://api.fixer.io/latest?symbols=GBP").string)
-  File.write('db/currency_rates.txt', JSON.generate(currency_rates["rates"]))
+  File.open('db/currency_rates.txt', 'w') do |f|
+    gbp_rate = JSON.generate(currency_rates["rates"])
+    f.write(gbp_rate)
+  end
   gbp_rate = currency_rates["rates"]["GBP"]
   variants_with_pound_price = PriceCountriesProductVariant.where(currency:"STG")
   variants_with_pound_price.each do |variant|
