@@ -4,9 +4,8 @@ task :update_currency_rates => :environment do
   require 'json'
   
   currency_rates = JSON.parse(open("http://api.fixer.io/latest?symbols=GBP").string)
-  File.write('db/currency_rates.txt', currency_rates["rates"])
+  File.write('db/currency_rates.txt', JSON.generate(currency_rates["rates"]))
   gbp_rate = currency_rates["rates"]["GBP"]
-  binding.pry
   variants_with_pound_price = PriceCountriesProductVariant.where(currency:"STG")
   variants_with_pound_price.each do |variant|
     variant.update_attributes(price_in_euros: (variant.price / gbp_rate))
@@ -21,7 +20,7 @@ task :update_currency_rates => :environment do
     rescue
       variant.destroy
     else
-     shopify_variant.update_attributes(price: variant.price_in_euros)
+      shopify_variant.update_attributes(price: variant.price_in_euros)
     end
   end
 end
