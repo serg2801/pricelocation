@@ -8,7 +8,8 @@ task :update_currency_rates => :environment do
   gbp_rate = currency_rates["rates"]["GBP"]
   variants_with_pound_price = PriceCountriesProductVariant.where(currency:"STG")
   variants_with_pound_price.each do |variant|
-    variant.update_attributes(price_in_euros: (variant.price / gbp_rate))
+    _price_in_euros = (variant.price / gbp_rate).round(2)
+    variant.update_attributes(price_in_euros: _price_in_euros)
   end
   shop = Shop.first
   session = ShopifyAPI::Session.new(shop.shopify_domain, shop.shopify_token) 
