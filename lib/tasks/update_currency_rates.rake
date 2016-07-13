@@ -4,7 +4,7 @@ task :update_currency_rates => :environment do
   require 'json'
   
   currency_rates = JSON.parse(open("http://api.fixer.io/latest?symbols=GBP").string)
-  File.open('public/currency_rates.txt', 'w') do |f|
+  File.open('db/currency_rates.dat', 'w') do |f|
     gbp_rate = JSON.generate(currency_rates["rates"])
     f.write(gbp_rate)
   end

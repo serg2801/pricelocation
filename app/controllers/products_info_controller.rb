@@ -29,7 +29,7 @@ class ProductsInfoController < ApplicationController
   end
   
   def show
-    @gbp_rate = JSON.parse(open("public/currency_rates.txt").read)["GBP"]
+    @gbp_rate = JSON.parse(open("db/currency_rates.dat").read)["GBP"]
     products_ids = params[:products_ids]
     #remote_ip = '217.173.208.0' 
     #217.173.208.0 Ireland
